@@ -1,7 +1,9 @@
 package com.pbd.PBD.Project.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,11 +11,13 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "joc")
 public class Joc {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_joc")
     Integer id;
 
@@ -55,5 +59,27 @@ public class Joc {
 
     @Column(name = "Scor_jucator2")
     private Integer scorJucator2;
+
+    // Constructor for new games
+    public Joc(java.sql.Date startDate, java.sql.Date endDate, String type, Tip typeID,
+               Player winner, Player jucator1, Player jucator2, Integer nrPartide,
+               Integer nrPartideJucate, Integer scorJucator1, Integer scorJucator2) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.type = type;
+        this.typeID = typeID;
+        this.winner = winner;
+        this.jucator1 = jucator1;
+        this.jucator2 = jucator2;
+        this.nrPartide = nrPartide;
+        this.nrPartideJucate = nrPartideJucate;
+        this.scorJucator1 = scorJucator1;
+        this.scorJucator2 = scorJucator2;
+    }
+
+    @Override
+    public String toString(){
+        return getNrPartide().toString();
+    }
 
 }
