@@ -31,4 +31,16 @@ INSERT INTO pbd.tip (ID_tip, Nume) VALUES
 (10, 'Swimming');
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-01', '2024-01-02', 'Football', 1, NULL, 1, 2, 5, 0, 10, 15, 1);
+VALUES ('2024-01-01', '2024-01-02', 'Football', 1, 1, 1, 2, 5, 0, 10, 15, 1);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
+VALUES ('2024-01-03', '2024-01-04', 'Basketball', 2, 3, 3, 4, 7, 0, 20, 18, 2);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
+VALUES ('2024-01-05', '2024-01-06', 'Tennis', 3, 5, 5, 6, 3, 0, 6, 4, 3);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
+VALUES ('2024-01-07', '2024-01-08', 'Volleyball', 4, 9, 7, 9, 5, 0, 15, 10, 4);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
+VALUES ('2024-01-09', '2024-01-10', 'Badminton', 5, 9, 9, 10, 3, 0, 8, 6, 5);

@@ -11,6 +11,4 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
     @Query("SELECT p FROM Player p")
     List<Player> getAllPlayers();
 
-
-
 }

@@ -38,12 +38,12 @@ public class Joc {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Player winner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Jucator1")
     private Player jucator1;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Jucator2")
     private Player jucator2;
