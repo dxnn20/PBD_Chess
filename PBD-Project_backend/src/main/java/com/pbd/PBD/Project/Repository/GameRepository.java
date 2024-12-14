@@ -27,7 +27,7 @@ public interface GameRepository extends JpaRepository<Joc, Integer> {
     @Query("SELECT new com.pbd.PBD.Project.DTO.BestPlayerDTO(winner, COUNT(*)) " +
             "FROM Joc " +
             "GROUP BY winner " +
-            "ORDER BY COUNT(*) DESC")
+            "ORDER BY COUNT(*) DESC LIMIT 1")
     Optional<BestPlayerDTO> findBestPlayerWithWinCount();
 
     @Query("SELECT new com.pbd.PBD.Project.DTO.PlayerWithMostGamesDTO(p, COUNT(g)) " +

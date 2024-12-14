@@ -12,13 +12,8 @@ import javax.management.ConstructorParameters;
 public class GameDTO {
     private String startDate;
     private String endDate;
-    private Integer typeID;
     private String type;
-    private Integer winner;
     private Integer nrPartide;
 //    private Integer id;
     private Integer jucator1, jucator2;
-    private Integer nrPartideJucate;
-    private Integer scorJucator1;
-    private Integer scorJucator2;
 }

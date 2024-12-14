@@ -28,20 +28,19 @@ public class GameController {
 
     @PostMapping("/create")
     public ResponseEntity<Joc> createGame(@RequestBody GameDTO game) {
+
         try {
             Joc savedGame = gameService.createGame(game);
             return new ResponseEntity<>(savedGame, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping(value = "/get-by-date", produces = "application/json")
     public ResponseEntity<List<Joc>> findAllByDateRangeSortedByTypeAndStartDate(
-            @RequestParam(value = "startDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
-            @RequestParam(value = "endDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
+            @RequestParam(value = "startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(value = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
 
         System.out.println(startDate + " " + endDate);
 

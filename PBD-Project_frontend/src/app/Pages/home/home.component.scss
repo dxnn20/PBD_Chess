@@ -31,3 +31,48 @@
   padding: 20px;
   overflow-y: auto;
 }
+
+.create-game-container {
+  padding: 20px;
+  max-width: 600px; /* Container width remains limited */
+  margin: 0 auto;
+  flex-grow: 1; /* Allows it to take up remaining space without affecting the sidebar */
+  overflow: hidden; /* Prevents overflow issues if content exceeds the size */
+}
+
+.create-game-container h2 {
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+.create-game-container .create-game-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.create-game-container .create-game-form mat-form-field {
+  width: 100%; /* Ensures form fields span the available width */
+}
+
+.create-game-container .create-game-form button[type="submit"] {
+  align-self: flex-start;
+  margin-top: 16px;
+}
+
+
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Space between form fields */
+}
+
+.form-field {
+  flex: 1 1 calc(33.333% - 16px); /* Adjusts fields to fit 3 per row */
+  min-width: 200px; /* Prevents fields from shrinking too small */
+}
+
+.submit-button {
+  flex: 1 1 100%; /* Makes the submit button span the entire row */
+  margin-top: 16px;
+}

@@ -11,15 +11,39 @@
     <!-- Display dynamic content -->
     <div *ngIf="currentView === 'create-game'">
       <h2>Create New Game</h2>
-      <form (ngSubmit)="submitNewGame()">
+      <form (ngSubmit)="submitNewGame()" class="form-container">
         <!-- Form inputs for game creation -->
-        <label>Start Date: <input type="date" [(ngModel)]="newGame.startDate" name="startDate"></label>
-        <label>End Date: <input type="date" [(ngModel)]="newGame.endDate" name="endDate"></label>
-        <label>Type: <input type="text" [(ngModel)]="newGame.type" name="type"></label>
-        <label>Player 1 ID: <input type="number" [(ngModel)]="newGame.jucator1" name="jucator1"></label>
-        <label>Player 2 ID: <input type="number" [(ngModel)]="newGame.jucator2" name="jucator2"></label>
-        <label>Winner ID: <input type="number" [(ngModel)]="newGame.winner" name="winner"></label>
-        <button type="submit">Create Game</button>
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Start Date</mat-label>
+          <input matInput [(ngModel)]="newGame.startDate" name="startDate">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>End Date</mat-label>
+          <input matInput [(ngModel)]="newGame.endDate" name="endDate">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Type</mat-label>
+          <input matInput type="text" [(ngModel)]="newGame.type" name="type">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Number of Matches</mat-label>
+          <input matInput type="number" [(ngModel)]="newGame.nrPartide" name="nrPartide">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Player 1 ID</mat-label>
+          <input matInput type="number" [(ngModel)]="newGame.jucator1" name="jucator1">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Player 2 ID</mat-label>
+          <input matInput type="number" [(ngModel)]="newGame.jucator2" name="jucator2">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="submit-button">Create Game</button>
       </form>
     </div>
 
@@ -43,11 +67,10 @@
           <td>{{ game.type }}</td>
           <td>{{ game.startDate }}</td>
           <td>{{ game.endDate }}</td>
-          <td>{{ game.jucator1.name }}</td>
-          <td>{{ game.jucator2.name }}</td>
-          <td>{{ game.winner }}</td>
+          <td>{{ game.jucator1?.name }}</td>
+          <td>{{ game.jucator2?.name }}</td>
+          <td>{{ game.winner?.name }}</td>
         </tr>
-
         </tbody>
       </table>
     </div>

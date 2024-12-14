@@ -12,6 +12,7 @@ import com.pbd.PBD.Project.Repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.net.Proxy;
 import java.sql.Date;
 import java.util.List;
@@ -34,21 +35,12 @@ public class GameService {
 
     public Joc createGame(GameDTO gameDTO) {
 
-        System.out.println(gameDTO.getTypeID());
-        System.out.println(gameDTO.getWinner());
-
-
         if ((gameDTO.getNrPartide() % 2) != 1)
             throw new IllegalArgumentException("Number of games must be odd.");
 
         // Fetching the related entities from the repository
-        Tip type = typeRepository.findById(gameDTO.getTypeID())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid type ID: " + gameDTO.getTypeID()));
-
-        // Fetch the players, allowing for the winner to be null
-        Player winner = gameDTO.getWinner() != null ?
-                playerRepository.findById(gameDTO.getWinner())
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid winner ID: " + gameDTO.getWinner())) : null;
+        Tip type = typeRepository.getTypeByName(gameDTO.getType())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid type: " + gameDTO.getType()));
 
         // Get player 1, it needs to exist
         Player jucator1 = playerRepository.findById(gameDTO.getJucator1())
@@ -58,19 +50,27 @@ public class GameService {
         Player jucator2 = playerRepository.findById(gameDTO.getJucator2())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid player2 ID: " + gameDTO.getJucator2()));
 
+
+
+        java.sql.Date startDate = Date.valueOf(gameDTO.getStartDate());
+        java.sql.Date endDate = Date.valueOf(gameDTO.getEndDate());
+
+        System.out.println("Start date: " + startDate);
+        System.out.println("End date: " + endDate);
+
         // Create new object with all the collected data
         Joc game = new Joc(
-                Date.valueOf(gameDTO.getStartDate()),
-                Date.valueOf(gameDTO.getEndDate()),
+                startDate,
+                endDate,
                 gameDTO.getType(),
                 type,
-                winner,
+                null,
                 jucator1,
                 jucator2,
                 gameDTO.getNrPartide(),
-                gameDTO.getNrPartideJucate(),
-                gameDTO.getScorJucator1(),
-                gameDTO.getScorJucator2()
+                0,
+                0,
+                0
         );
 
         // For debugging
@@ -82,10 +82,8 @@ public class GameService {
 
     public List<Joc> findAllByDateRangeSortedByTypeAndStartDate(Date startDate, Date endDate) throws IllegalArgumentException {
 
-        if(startDate.after(endDate))
+        if (startDate.after(endDate))
             throw new IllegalArgumentException("Bad Dates!");
-
-        System.out.println(startDate + "  " + endDate);
 
         return this.gameRepository.findAllByDateRangeSortedByTypeAndStartDate(startDate, endDate);
     }
