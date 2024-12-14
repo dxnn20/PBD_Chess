@@ -1,29 +1,29 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs'; // For handling fallback data on error
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {Component} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, tap} from 'rxjs/operators';
+import {of} from 'rxjs'; // For handling fallback data on error
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 
 // Define interfaces for type safety
-interface Game {
-  id: number;
-  startDate: string;
-  endDate: string;
-  type: string;
-  jucator1: string;
-  jucator2: string;
-  winner: string;
-}
-
-
 
 interface Player {
   id: number;
   name: string;
   dateOfBirth: string;
+  registrationDate: string;
+}
+
+interface Game {
+  id: number;
+  startDate: string;
+  endDate: string;
+  type: string;
+  jucator1: Player;
+  jucator2: Player;
+  winner: string;
 }
 
 interface BestPlayer {
@@ -46,7 +46,9 @@ interface PlayerWithMostGamesDTO {
 })
 
 export class HomeComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
+
   currentView: string = ''; // Track the active view
   newGame: Partial<Game> = {};
   // Form data for creating a new game
@@ -55,7 +57,7 @@ export class HomeComponent {
   bestPlayer: BestPlayer | null = null;
   mostGamesPlayer: PlayerWithMostGamesDTO | null = null;
 
-private apiUrl = 'http://localhost:8081';
+  private apiUrl = 'http://localhost:8081';
 
 
   showCreateGameForm() {
@@ -66,7 +68,7 @@ private apiUrl = 'http://localhost:8081';
     this.currentView = 'game-table';
     this.http
       .get<Game[]>(`${this.apiUrl}/games/get-by-date`, {
-        params: { startDate: '2024-01-01', endDate: '2024-04-01' }
+        params: {startDate: '2024-01-01', endDate: '2024-04-01'}
       })
       .pipe(
         tap((data) => {
@@ -81,12 +83,10 @@ private apiUrl = 'http://localhost:8081';
       .subscribe();
   }
 
-
-
   fetchBestPlayer() {
     this.currentView = 'best-player';
     this.http
-      .get<BestPlayer>(`${this.apiUrl}/best-player`)
+      .get<BestPlayer>(`${this.apiUrl}/players/best-player`)
       .pipe(
         tap((data) => {
           console.log('Received best player:', data);
