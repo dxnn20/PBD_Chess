@@ -43,4 +43,4 @@ INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator
 VALUES ('2024-01-07', '2024-01-08', 'Volleyball', 4, 9, 7, 9, 5, 0, 15, 10, 4);
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-09', '2024-01-10', 'Badminton', 5, 9, 9, 10, 3, 0, 8, 6, 5);
+VALUES ('2024-01-09', '2024-01-10', 'Badminton', 5, 9, 1, 10, 3, 0, 8, 6, 5);

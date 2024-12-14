@@ -100,4 +100,7 @@ public class GameService {
                 .orElseThrow(() -> new IllegalArgumentException("No games found"));
     }
 
+    public Optional<List<Joc>> findGamesByPlayerId(Long id) {
+        return gameRepository.findGamesByPlayerId(id);
+    }
 }
