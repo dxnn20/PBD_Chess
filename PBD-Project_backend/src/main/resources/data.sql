@@ -1,5 +1,6 @@
 DELETE FROM jucatori;
 DELETE FROM tip;
+DELETE FROM joc;
 
 -- Reset the auto-increment counter for jucatori
 ALTER TABLE jucatori AUTO_INCREMENT = 1;

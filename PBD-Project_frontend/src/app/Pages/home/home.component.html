@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="sidebar">
+    <button (click)="showCreateGameForm()">Create New Game</button>
+    <button (click)="fetchGamesByDate()">Games (Jan 1, 2020 - Apr 1, 2020)</button>
+    <button (click)="fetchBestPlayer()">Best Chess Player</button>
+    <button (click)="fetchMostGamesPlayer()">Player with Most Games</button>
+
+  </div>
+
+  <div class="content">
+    <!-- Display dynamic content -->
+    <div *ngIf="currentView === 'create-game'">
+      <h2>Create New Game</h2>
+      <form (ngSubmit)="submitNewGame()">
+        <!-- Form inputs for game creation -->
+        <label>Start Date: <input type="date" [(ngModel)]="newGame.startDate" name="startDate"></label>
+        <label>End Date: <input type="date" [(ngModel)]="newGame.endDate" name="endDate"></label>
+        <label>Type: <input type="text" [(ngModel)]="newGame.type" name="type"></label>
+        <label>Player 1 ID: <input type="number" [(ngModel)]="newGame.jucator1" name="jucator1"></label>
+        <label>Player 2 ID: <input type="number" [(ngModel)]="newGame.jucator2" name="jucator2"></label>
+        <label>Winner ID: <input type="number" [(ngModel)]="newGame.winner" name="winner"></label>
+        <button type="submit">Create Game</button>
+      </form>
+    </div>
+
+    <div *ngIf="currentView === 'game-table'">
+      <h2>Games (Jan 1, 2020 - Apr 1, 2020)</h2>
+      <table>
+        <thead>
+        <tr>
+          <th>Game ID</th>
+          <th>Type</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Player 1</th>
+          <th>Player 2</th>
+          <th>Winner</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let game of games">
+          <td>{{ game.id }}</td>
+          <td>{{ game.type }}</td>
+          <td>{{ game.startDate }}</td>
+          <td>{{ game.endDate }}</td>
+          <td>{{ game.jucator1 }}</td>
+          <td>{{ game.jucator2 }}</td>
+          <td>{{ game.winner }}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="currentView === 'best-player'">
+      <h2>Best Chess Player</h2>
+      <p>Name: {{ bestPlayer?.player?.name }}</p>
+      <p>Win Count: {{ bestPlayer?.winCount }}</p>
+    </div>
+
+    <div *ngIf="currentView === 'most-games-player'">
+      <h2>Player with Most Games</h2>
+      <p>Name: {{ mostGamesPlayer?.player?.name }}</p>
+      <p>Games Played: {{ mostGamesPlayer?.nrOfWins }}</p>
+    </div>
+
+  </div>
+</div>
+
