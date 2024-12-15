@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs'; // For handling fallback data on error
-import {CommonModule} from '@angular/common';
+import {CommonModule, formatDate, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {MatFormField} from "@angular/material/form-field";
+import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {
@@ -15,15 +15,35 @@ import {
   MatDatepickerToggle
 } from "@angular/material/datepicker";
 import {MatLabel} from "@angular/material/form-field";
-import {MatNativeDateModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOption} from "@angular/material/core";
+import {MatSelect} from "@angular/material/select";
+import {
+  MatCell, MatCellDef, MatColumnDef,
+  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable
+} from "@angular/material/table";
+import {
+  MatCard,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardImage
+} from "@angular/material/card";
+import {DirectTemplateSourceMapping} from "@angular/compiler-cli/src/ngtsc/typecheck/api";
 
 // Define interfaces for type safety
 
 interface Player {
   id: number;
   name: string;
-  dateOfBirth: string;
-  registrationDate: string;
+  birth_date: string;
+  registration_date: string;
 }
 
 interface Game {
@@ -56,18 +76,22 @@ interface PlayerWithMostGamesDTO {
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule, MatFormField, MatInput, MatFormField, MatInput,
-    MatButton, MatDatepickerToggle, MatDatepickerInput, MatDatepicker, MatLabel, MatDatepickerModule, MatNativeDateModule],
+    MatButton, MatDatepickerToggle, MatDatepickerInput, MatCardTitle, MatCardSubtitle, MatDatepicker, MatLabel, MatDatepickerModule, MatNativeDateModule, MatError, MatSelect, MatOption, MatTable, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatRowDef, MatHeaderRowDef, MatColumnDef, MatHeaderCellDef, MatCellDef, MatCard, MatCardHeader, MatCardContent, MatCardActions, MatCardImage, NgOptimizedImage],
   providers: [MatDatepickerModule]
 })
 
 export class HomeComponent {
+  startDateForGames: string | null = null;
+  endDateForGames: string | null = null;
+
   constructor(private http: HttpClient) {
   }
 
-  currentView: string = ''; // Track the active view
-  newGame: Game = {
+  gameTypes: string[] = ['Chess', 'Checkers']; // Dropdown options
+  displayedColumns: string[] = ['id', 'type', 'startDate', 'endDate', 'player1', 'player2', 'winner'];
 
-  }// Form data for creating a new game
+  currentView: string = ''; // Track the active view
+  newGame: Game = {}// Form data for creating a new game
 
   games: Game[] = [];
   bestPlayer: BestPlayer | null = null;
@@ -80,12 +104,23 @@ export class HomeComponent {
     this.currentView = 'create-game';
   }
 
+  fetchGames() {
+    this.currentView = 'game-table';
+  }
+
   fetchGamesByDate() {
+    if (!this.startDateForGames || !this.endDateForGames) {
+      alert('Please select both start and end dates.');
+      return;
+    }
 
     this.currentView = 'game-table';
     this.http
       .get<Game[]>(`${this.apiUrl}/games/get-by-date`, {
-        params: {startDate: '2024-01-01', endDate: '2024-04-01'}
+        params: {
+          startDate: this.startDateForGames,
+          endDate: this.endDateForGames
+        }
       })
       .pipe(
         tap((data) => {
@@ -99,6 +134,7 @@ export class HomeComponent {
       )
       .subscribe();
   }
+
 
   fetchBestPlayer() {
     this.currentView = 'best-player';
@@ -135,6 +171,16 @@ export class HomeComponent {
   }
 
   submitNewGame() {
+    const locale = 'en-US'; // Ensure locale is set for consistent formatting
+
+    // Format the dates to 'yyyy-MM-dd'
+    if (this.newGame.startDate) {
+      this.newGame.startDate = formatDate(this.newGame.startDate, 'yyyy-MM-dd', locale);
+    }
+
+    if (this.newGame.endDate) {
+      this.newGame.endDate = formatDate(this.newGame.endDate, 'yyyy-MM-dd', locale);
+    }
 
     console.log('Creating game:', this.newGame);
 
@@ -154,7 +200,4 @@ export class HomeComponent {
       )
       .subscribe();
   }
-
-
-
 }

@@ -14,15 +14,7 @@
 
   button {
     padding: 10px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: #0056b3;
-    }
+    margin: 10px 15px;
   }
 }
 
@@ -70,9 +62,36 @@
 .form-field {
   flex: 1 1 calc(33.333% - 16px); /* Adjusts fields to fit 3 per row */
   min-width: 200px; /* Prevents fields from shrinking too small */
+  padding: 5px;
+  margin: 5px;
 }
 
 .submit-button {
   flex: 1 1 100%; /* Makes the submit button span the entire row */
   margin-top: 16px;
 }
+
+.most-games-player-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.player-card {
+  width: 400px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+

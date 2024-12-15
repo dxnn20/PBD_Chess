@@ -1,10 +1,9 @@
 <div class="container">
   <div class="sidebar">
-    <button (click)="showCreateGameForm()">Create New Game</button>
-    <button (click)="fetchGamesByDate()">Games (Jan 1, 2020 - Apr 1, 2020)</button>
-    <button (click)="fetchBestPlayer()">Best Chess Player</button>
-    <button (click)="fetchMostGamesPlayer()">Player with Most Games</button>
-
+    <button mat-raised-button color="primary" (click)="showCreateGameForm()">Create New Game</button>
+    <button mat-raised-button color="primary" (click)="fetchGames()">Games (Jan 1, 2020 - Apr 1, 2020)</button>
+    <button mat-raised-button color="primary" (click)="fetchBestPlayer()">Best Chess Player</button>
+    <button mat-raised-button color="primary" (click)="fetchMostGamesPlayer()">Player with Most Games</button>
   </div>
 
   <div class="content">
@@ -12,20 +11,46 @@
     <div *ngIf="currentView === 'create-game'">
       <h2>Create New Game</h2>
       <form (ngSubmit)="submitNewGame()" class="form-container">
-        <!-- Form inputs for game creation -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Start Date</mat-label>
-          <input matInput [(ngModel)]="newGame.startDate" name="startDate">
+          <input
+            matInput
+            type="date"
+            [(ngModel)]="newGame.startDate"
+            name="startDate"
+            #startDateModel="ngModel"
+            required
+          >
+          <mat-error *ngIf="startDateModel.touched && !startDateModel.valid">
+            Start Date is required.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>End Date</mat-label>
-          <input matInput [(ngModel)]="newGame.endDate" name="endDate">
+          <input
+            matInput
+            type="date"
+            [(ngModel)]="newGame.endDate"
+            name="endDate"
+            #endDateModel="ngModel"
+            required
+          >
+          <mat-error *ngIf="endDateModel.touched && !endDateModel.valid">
+            End Date is required.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Type</mat-label>
-          <input matInput type="text" [(ngModel)]="newGame.type" name="type">
+          <mat-select [(ngModel)]="newGame.type" name="type" required>
+            <mat-option *ngFor="let gameType of gameTypes" [value]="gameType">
+              {{ gameType }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!newGame.type">
+            Type is required.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
@@ -47,46 +72,122 @@
       </form>
     </div>
 
-    <div *ngIf="currentView === 'game-table'">
-      <h2>Games (Jan 1, 2020 - Apr 1, 2020)</h2>
-      <table>
-        <thead>
-        <tr>
-          <th>Game ID</th>
-          <th>Type</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Player 1</th>
-          <th>Player 2</th>
-          <th>Winner</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let game of games">
-          <td>{{ game.id }}</td>
-          <td>{{ game.type }}</td>
-          <td>{{ game.startDate }}</td>
-          <td>{{ game.endDate }}</td>
-          <td>{{ game.jucator1?.name }}</td>
-          <td>{{ game.jucator2?.name }}</td>
-          <td>{{ game.winner?.name }}</td>
-        </tr>
-        </tbody>
-      </table>
+    <div *ngIf="currentView === 'game-table'" class="game-table-container">
+      <h2>Games</h2>
+
+      <form (ngSubmit)="fetchGamesByDate()" #gameForm="ngForm">
+        <div class="date-range-container">
+          <!-- Start Date Selection -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Start Date</mat-label>
+            <input
+              matInput
+              type="date"
+              [(ngModel)]="startDateForGames"
+              name="startDate"
+              #startDateModel="ngModel"
+              required
+              class="datepicker-content"
+            />
+            <mat-error *ngIf="startDateModel.touched && !startDateModel.valid">
+              Start Date is required.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- End Date Selection -->
+          <mat-form-field appearance="fill" class="form-field" >
+            <mat-label>End Date</mat-label>
+            <input
+              matInput
+              type="date"
+              [(ngModel)]="endDateForGames"
+              name="endDate"
+              #endDateModel="ngModel"
+              required
+            />
+            <mat-error *ngIf="endDateModel.touched && !endDateModel.valid">
+              End Date is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button mat-raised-button color="primary" [disabled]="gameForm.invalid">Fetch Games</button>
+        </div>
+      </form>
+
+      <!-- Game Table -->
+      <mat-table [dataSource]="games" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> Game ID</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.id }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef> Type</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.type }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <mat-header-cell *matHeaderCellDef> Start Date</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.startDate | date }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+          <mat-header-cell *matHeaderCellDef> End Date</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.endDate | date }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="player1">
+          <mat-header-cell *matHeaderCellDef> Player 1</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.jucator1?.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="player2">
+          <mat-header-cell *matHeaderCellDef> Player 2</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.jucator2?.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="winner">
+          <mat-header-cell *matHeaderCellDef> Winner</mat-header-cell>
+          <mat-cell *matCellDef="let game"> {{ game.winner?.name }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
     </div>
 
-    <div *ngIf="currentView === 'best-player'">
-      <h2>Best Chess Player</h2>
-      <p>Name: {{ bestPlayer?.player?.name }}</p>
-      <p>Win Count: {{ bestPlayer?.winCount }}</p>
+    <div *ngIf="currentView === 'best-player'" class="most-games-player-container">
+      <mat-card class="player-card">
+        <mat-card-header>
+          <mat-card-title>Best player by games</mat-card-title>
+          <mat-card-subtitle>Statistics Overview</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Name:</strong> {{ bestPlayer?.player?.name || 'N/A' }}</p>
+          <p><strong>Date of Birth:</strong> {{ bestPlayer?.player?.birth_date || 'N/A' }}</p>
+          <p><strong>Registration Date:</strong> {{ bestPlayer?.player?.registration_date || 'N/A' }}</p>
+          <p><strong>Win Count:</strong> {{ bestPlayer?.winCount || 0 }}</p>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <div *ngIf="currentView === 'most-games-player'">
-      <h2>Player with Most Games</h2>
-      <p>Name: {{ mostGamesPlayer?.player?.name }}</p>
-      <p>Games Played: {{ mostGamesPlayer?.nrOfWins }}</p>
+    <div *ngIf="currentView === 'most-games-player'" class="most-games-player-container">
+      <mat-card class="player-card">
+        <mat-card-header>
+          <mat-card-title>Player with Most Games</mat-card-title>
+          <mat-card-subtitle>Statistics Overview</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Name:</strong> {{ mostGamesPlayer?.player?.name || 'N/A' }}</p>
+          <p><strong>Date of Birth:</strong> {{ mostGamesPlayer?.player?.birth_date || 'N/A' }}</p>
+          <p><strong>Registration Date:</strong> {{ mostGamesPlayer?.player?.registration_date || 'N/A' }}</p>
+          <p><strong>Games Played:</strong> {{ mostGamesPlayer?.nrOfWins || 0 }}</p>
+        </mat-card-content>
+      </mat-card>
     </div>
-
   </div>
 </div>
 

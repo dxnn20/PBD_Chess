@@ -19,29 +19,23 @@ INSERT INTO jucatori (data_inscrierii, data_nasterii, nume) VALUES
 
 ALTER TABLE tip AUTO_INCREMENT = 1;
 
+-- Insert game types
 INSERT INTO pbd.tip (ID_tip, Nume) VALUES
-(1, 'Football'),
-(2, 'Basketball'),
-(3, 'Tennis'),
-(4, 'Volleyball'),
-(5, 'Badminton'),
-(6, 'Baseball'),
-(7, 'Rugby'),
-(8, 'Hockey'),
-(9, 'Cricket'),
-(10, 'Swimming');
+(1, 'Chess'),
+(2, 'Checkers');
+
+-- Insert games with only Chess and Checkers
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
+VALUES ('2024-01-01', '2024-01-02', 'Chess', 1, 1, 1, 2, 5, 0, 3, 2, 1);
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-01', '2024-01-02', 'Football', 1, 1, 1, 2, 5, 0, 10, 15, 1);
+VALUES ('2024-01-03', '2024-01-04', 'Checkers', 2, 3, 3, 4, 3, 0, 2, 1, 2);
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-03', '2024-01-04', 'Basketball', 2, 3, 3, 4, 7, 0, 20, 18, 2);
+VALUES ('2024-01-05', '2024-01-06', 'Chess', 1, 5, 5, 6, 3, 0, 6, 4, 3);
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-05', '2024-01-06', 'Tennis', 3, 5, 5, 6, 3, 0, 6, 4, 3);
+VALUES ('2024-01-07', '2024-01-08', 'Checkers', 2, 7, 7, 8, 5, 0, 4, 3, 4);
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-07', '2024-01-08', 'Volleyball', 4, 9, 7, 9, 5, 0, 15, 10, 4);
-
-INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
-VALUES ('2024-01-09', '2024-01-10', 'Badminton', 5, 9, 1, 10, 3, 0, 8, 6, 5);
+VALUES ('2024-01-09', '2024-01-10', 'Chess', 1, 9, 1, 10, 3, 0, 8, 6, 5);
