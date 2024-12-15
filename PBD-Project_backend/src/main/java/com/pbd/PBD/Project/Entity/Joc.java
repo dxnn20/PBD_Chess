@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.sql.Date;
+
 @Entity
 @Getter
 @Setter
@@ -75,6 +77,18 @@ public class Joc {
         this.nrPartideJucate = nrPartideJucate;
         this.scorJucator1 = scorJucator1;
         this.scorJucator2 = scorJucator2;
+    }
+
+    public Joc(Date startDate, String type, Tip type1, Object o, Player jucator1, Player jucator2, Integer nrPartide, int i, int i1, int i2) {
+        this.startDate = startDate;
+        this.type = type;
+        this.typeID = type1;
+        this.jucator1 = jucator1;
+        this.jucator2 = jucator2;
+        this.nrPartide = nrPartide;
+        this.nrPartideJucate = i;
+        this.scorJucator1 = i1;
+        this.scorJucator2 = i2;
     }
 
     @Override

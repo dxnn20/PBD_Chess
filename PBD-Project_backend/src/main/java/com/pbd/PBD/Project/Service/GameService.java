@@ -17,6 +17,7 @@ import java.net.Proxy;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -53,15 +54,12 @@ public class GameService {
 
 
         java.sql.Date startDate = Date.valueOf(gameDTO.getStartDate());
-        java.sql.Date endDate = Date.valueOf(gameDTO.getEndDate());
 
         System.out.println("Start date: " + startDate);
-        System.out.println("End date: " + endDate);
 
         // Create new object with all the collected data
         Joc game = new Joc(
                 startDate,
-                endDate,
                 gameDTO.getType(),
                 type,
                 null,
@@ -106,11 +104,28 @@ public class GameService {
         Joc gameToUpdate = gameRepository.findById(game.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid game ID: " + game.getId()));
 
-        gameToUpdate.setStartDate(Date.valueOf(game.getStartDate().toLocalDate()));
-        gameToUpdate.setEndDate(Date.valueOf(game.getEndDate().toLocalDate()));
         gameToUpdate.setType(game.getType());
         gameToUpdate.setNrPartide(game.getNrPartide());
+        gameToUpdate.setNrPartideJucate(game.getNrPartideJucate());
+        gameToUpdate.setScorJucator1(game.getScorJucator1());
+        gameToUpdate.setScorJucator2(game.getScorJucator2());
 
         return gameRepository.save(gameToUpdate);
     }
+
+
+    public BestPlayerDTO getBestPlayerByAgeInterval(Integer minAge, Integer maxAge) {
+        List<BestPlayerDTO> players = gameRepository.allPlayersWithWinCount();
+
+        List<BestPlayerDTO> filteredPlayers = players.stream()
+                .filter(player -> player.getPlayer().getAge() >= minAge && player.getPlayer().getAge() <= maxAge)
+                .toList();
+
+        try{
+        return filteredPlayers.getFirst();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

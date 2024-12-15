@@ -39,3 +39,12 @@ VALUES ('2024-01-07', '2024-01-08', 'Checkers', 2, 7, 7, 8, 5, 0, 4, 3, 4);
 
 INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2, ID_joc)
 VALUES ('2024-01-09', '2024-01-10', 'Chess', 1, 1, 1, 10, 3, 0, 8, 6, 5);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2)
+VALUES ('2024-01-09', '2024-01-10', 'Chess', 1, 10, 1, 10, 3, 0, 8, 6);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2)
+VALUES ('2024-01-09', '2024-01-10', 'Chess', 1, 10, 1, 10, 3, 0, 8, 6);
+
+INSERT INTO joc (Data_inceput_joc, Data_sfarsit_joc, Tip_joc, ID_tip, Invingator, Jucator1, Jucator2, Nr_partide, Nr_partide_jucate, Scor_jucator1, Scor_jucator2)
+VALUES ('2024-01-09', '2024-01-10', 'Checkers', 1, 10, 1, 10, 3, 0, 8, 6);

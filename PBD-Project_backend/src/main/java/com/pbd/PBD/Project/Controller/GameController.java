@@ -1,5 +1,6 @@
 package com.pbd.PBD.Project.Controller;
 
+import com.pbd.PBD.Project.DTO.BestPlayerDTO;
 import com.pbd.PBD.Project.DTO.GameDTO;
 import com.pbd.PBD.Project.Entity.Joc;
 import com.pbd.PBD.Project.Entity.Player;
@@ -63,6 +64,18 @@ public class GameController {
             return new ResponseEntity<>(updatedGame, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/get-best-player-by-age-interval")
+    public ResponseEntity<BestPlayerDTO> getBestPlayerByAgeInterval(
+            @RequestParam(value = "minAge") Integer minAge,
+            @RequestParam(value = "maxAge") Integer maxAge) {
+        try {
+            BestPlayerDTO bestPlayer = gameService.getBestPlayerByAgeInterval(minAge, maxAge);
+            return ResponseEntity.ok(bestPlayer);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

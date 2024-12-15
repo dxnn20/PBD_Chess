@@ -6,13 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
 
-    @Query("SELECT p FROM Player p")
-    List<Player> getAllPlayers();
-
-    @Query("SELECT j FROM Joc j WHERE j.jucator1.id = ?1 OR j.jucator2.id = ?1")
-    List<Joc> findGamesByPlayerId(Integer id);
 
 }
