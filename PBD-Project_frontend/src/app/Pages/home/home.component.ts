@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
-import {of} from 'rxjs'; // For handling fallback data on error
+import {Observable, of} from 'rxjs'; // For handling fallback data on error
 import {CommonModule, formatDate, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -89,7 +89,7 @@ export class HomeComponent {
   }
 
   gameTypes: string[] = ['Chess', 'Checkers']; // Dropdown options
-  displayedColumns: string[] = ['id', 'type', 'startDate', 'endDate', 'player1', 'player2', 'winner'];
+  displayedColumns: string[] = ['id', 'type', 'startDate', 'endDate', 'player1', 'player2', 'winner', 'nrPartide', 'scorJucator1', 'scorJucator2', 'nrPartideJucate']; // Table columns
 
   currentView: string = ''; // Track the active view
   newGame: Game = {}// Form data for creating a new game
@@ -97,6 +97,8 @@ export class HomeComponent {
   games: Game[] = [];
   bestPlayer: BestPlayer | null = null;
   mostGamesPlayer: PlayerWithMostGamesDTO | null = null;
+  minAge: number = 0;
+  maxAge: number = 0;
 
   private apiUrl = 'http://localhost:8081';
 
@@ -138,7 +140,6 @@ export class HomeComponent {
       )
       .subscribe();
   }
-
 
   fetchBestPlayer() {
     this.currentView = 'best-player';
@@ -226,4 +227,45 @@ export class HomeComponent {
       )
       .subscribe();
   }
+
+  updateGame(game: Game) {
+
+    this.http
+      .put<Game>(`${this.apiUrl}/games/update`, game)
+      .pipe(
+        tap((updatedGame) => {
+          console.log('Updated game:', updatedGame);
+          alert('Game updated successfully!');
+          this.fetchGames(); // Fetch updated game list
+        }),
+        catchError((error) => {
+          console.error('Error updating game:', error);
+          alert('Failed to update the game. Please try again.');
+          return of(null);
+        })
+      )
+      .subscribe();
+  }
+
+  getBestPlayerByAgeView() {
+    this.bestPlayer = null;
+    this.currentView = 'best-player-by-age';
+  }
+
+  getBestPlayerByAgeInterval(): void {
+
+    console.log('Fetching best player by age interval:', this.minAge, this.maxAge);
+
+    this.http.get<BestPlayer>(`${this.apiUrl}/games/get-best-player-by-age-interval`, {
+      params: {
+        minAge: this.minAge,
+        maxAge: this.maxAge
+      }
+    }).subscribe((data) => {
+        this.bestPlayer = data;
+        console.log('Received best player by age interval:', this.bestPlayer);
+      }
+    )
+  }
+
 }

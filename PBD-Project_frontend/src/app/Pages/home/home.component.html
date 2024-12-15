@@ -5,6 +5,7 @@
     <button mat-raised-button color="primary" (click)="fetchBestPlayer()">Best Chess Player</button>
     <button mat-raised-button color="primary" (click)="fetchMostGamesPlayer()">Player with Most Games</button>
     <button mat-raised-button color="primary" (click)="showPlayerGames()">Games of a Player</button>
+    <button mat-raised-button color="primary" (click)="getBestPlayerByAgeView()">Best player by age</button>
   </div>
 
   <div class="content">
@@ -24,21 +25,6 @@
           >
           <mat-error *ngIf="startDateModel.touched && !startDateModel.valid">
             Start Date is required.
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" class="form-field">
-          <mat-label>End Date</mat-label>
-          <input
-            matInput
-            type="date"
-            [(ngModel)]="newGame.endDate"
-            name="endDate"
-            #endDateModel="ngModel"
-            required
-          >
-          <mat-error *ngIf="endDateModel.touched && !endDateModel.valid">
-            End Date is required.
           </mat-error>
         </mat-form-field>
 
@@ -96,7 +82,7 @@
           </mat-form-field>
 
           <!-- End Date Selection -->
-          <mat-form-field appearance="fill" class="form-field" >
+          <mat-form-field appearance="fill" class="form-field">
             <mat-label>End Date</mat-label>
             <input
               matInput
@@ -155,9 +141,42 @@
           <mat-cell *matCellDef="let game"> {{ game.winner?.name }}</mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="nrPartide" class="short-input">
+          <mat-header-cell *matHeaderCellDef> Number of Matches</mat-header-cell>
+          <mat-cell *matCellDef="let game">
+            <input matInput [disabled]="game.winner !== null" [(ngModel)]="game.nrPartide"
+                   (ngModelChange)="updateGame(game)">
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nrPartideJucate" class="short-input">
+          <mat-header-cell *matHeaderCellDef> Number of Matches</mat-header-cell>
+          <mat-cell *matCellDef="let game">
+            <input matInput [disabled]="game.winner !== null" [(ngModel)]="game.nrPartideJucate"
+                   (ngModelChange)="updateGame(game)">
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="scorJucator1" class="short-input">
+          <mat-header-cell *matHeaderCellDef> Score Player 1</mat-header-cell>
+          <mat-cell *matCellDef="let game">
+            <input matInput [disabled]="game.winner !== null" type="number" [(ngModel)]="game.scorJucator1"
+                   (ngModelChange)="updateGame(game)">
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="scorJucator2" class="short-input">
+          <mat-header-cell *matHeaderCellDef> Score Player 2</mat-header-cell>
+          <mat-cell *matCellDef="let game" class="short-input">
+            <input matInput type="number" [disabled]="game.winner !== null" [(ngModel)]="game.scorJucator2"
+                   (ngModelChange)="updateGame(game)">
+          </mat-cell>
+        </ng-container>
+
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
+
     </div>
 
     <div *ngIf="currentView === 'best-player'" class="most-games-player-container">
@@ -207,9 +226,67 @@
             Player ID is required.
           </mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" (click)="fetchGamesByPlayer(playerId)">Fetch Games</button>
+        <button mat-raised-button color="primary" type="submit" (click)="fetchGamesByPlayer(playerId)">Fetch Games
+        </button>
       </form>
     </div>
 
+    <div *ngIf="currentView === 'best-player-by-age'" class="best-player-by-age-container">
+      <h2>Best player by age</h2>
+      <form (ngSubmit)="getBestPlayerByAgeInterval()">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label> Min Age</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="minAge"
+            name="minAge"
+            #ageModel="ngModel"
+            required
+          >
+          <mat-error *ngIf="ageModel.touched && !ageModel.valid">
+            MinAge is required.
+          </mat-error>
+
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label> Max Age</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="maxAge"
+            name="maxAge"
+            #ageModel="ngModel"
+            required
+          >
+          <mat-error *ngIf="ageModel.touched && !ageModel.valid">
+            MinAge is required.
+          </mat-error>
+
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" type="submit" (click)="getBestPlayerByAgeInterval()">Fetch Best
+        Player
+      </button>
+
+      <mat-card class="player-card" *ngIf="bestPlayer != null">
+        <mat-card-header >
+          <mat-card-title>Best player by Age interval</mat-card-title>
+          <mat-card-subtitle>Statistics Overview</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Name:</strong> {{ bestPlayer?.player?.name || 'N/A' }}</p>
+          <p><strong>Date of Birth:</strong> {{ bestPlayer?.player?.birth_date || 'N/A' }}</p>
+          <p><strong>Registration Date:</strong> {{ bestPlayer?.player?.registration_date || 'N/A' }}</p>
+          <p><strong>Win Count:</strong> {{ bestPlayer?.winCount || 0 }}</p>
+          <p><strong>ID: </strong> {{ bestPlayer?.player?.id || 0 }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-error *ngIf="bestPlayer == null">
+        No player found in the given age interval.
+      </mat-error>
+
+    </div>
   </div>
 </div>

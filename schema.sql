@@ -45,4 +45,35 @@ CREATE TABLE Joc(
     CONSTRAINT datainc_chk CHECK (Data_inceput_joc<Data_sfarsit_joc)
 );
 
+DELIMITER $$
 
+CREATE TRIGGER future_date
+BEFORE INSERT ON Jucatori
+FOR EACH ROW
+BEGIN
+    IF NEW.data_nasterii > CURDATE() OR NEW.data_inscrierii > CURDATE() THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Future dates are not allowed';
+    END IF;
+END$$
+
+CREATE TRIGGER set_winner_and_end_date
+BEFORE UPDATE ON Joc
+FOR EACH ROW
+BEGIN
+    IF NEW.Nr_partide_jucate = NEW.Nr_partide THEN
+
+        IF NEW.Scor_jucator1 > NEW.Scor_jucator2 THEN
+            SET NEW.Invingator = NEW.Jucator1;
+        ELSEIF NEW.Scor_jucator2 > NEW.Scor_jucator1 THEN
+            SET NEW.Invingator = NEW.Jucator2;
+        ELSE
+            SET NEW.Invingator = NULL;
+        END IF;
+
+
+        SET NEW.Data_sfarsit_joc = NOW();
+    END IF;
+END$$
+
+DELIMITER ;
