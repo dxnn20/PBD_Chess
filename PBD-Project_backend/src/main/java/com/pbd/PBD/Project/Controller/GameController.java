@@ -55,4 +55,14 @@ public class GameController {
         }
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Joc> updateGame(@RequestBody Joc game) {
+        try {
+            // Ensure that we only update players and leave other fields intact
+            Joc updatedGame = gameService.updateGame(game);
+            return new ResponseEntity<>(updatedGame, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

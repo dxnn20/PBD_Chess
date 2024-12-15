@@ -83,6 +83,7 @@ interface PlayerWithMostGamesDTO {
 export class HomeComponent {
   startDateForGames: string | null = null;
   endDateForGames: string | null = null;
+  playerId: number  = 0;
 
   constructor(private http: HttpClient) {
   }
@@ -99,6 +100,9 @@ export class HomeComponent {
 
   private apiUrl = 'http://localhost:8081';
 
+  showPlayerGames() {
+    this.currentView = 'player-games';
+  }
 
   showCreateGameForm() {
     this.currentView = 'create-game';
@@ -196,6 +200,28 @@ export class HomeComponent {
           console.error('Error creating game:', error);
           alert('Failed to create the game. Please try again.');
           return of(null);
+        })
+      )
+      .subscribe();
+  }
+
+  fetchGamesByPlayer(playerId: number): void {
+    if (!playerId) {
+      console.error('Player ID is required');
+      return;
+    }
+
+    this.http
+      .get<Game[]>(`${this.apiUrl}/players/get-games-by-player-id`, { params: { id: playerId.toString() } })
+      .pipe(
+        tap((games) => {
+          console.log('Received games by player:', games);
+          this.games = games;
+          this.currentView = 'game-table';
+        }),
+        catchError((error) => {
+          console.error('Error fetching games by player', error);
+          return of([]); // Return empty array on error
         })
       )
       .subscribe();

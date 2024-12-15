@@ -4,6 +4,7 @@
     <button mat-raised-button color="primary" (click)="fetchGames()">Games (Jan 1, 2020 - Apr 1, 2020)</button>
     <button mat-raised-button color="primary" (click)="fetchBestPlayer()">Best Chess Player</button>
     <button mat-raised-button color="primary" (click)="fetchMostGamesPlayer()">Player with Most Games</button>
+    <button mat-raised-button color="primary" (click)="showPlayerGames()">Games of a Player</button>
   </div>
 
   <div class="content">
@@ -188,6 +189,27 @@
         </mat-card-content>
       </mat-card>
     </div>
+
+    <div *ngIf="currentView === 'player-games'" class="player-games-container">
+      <h2>Games of a Player</h2>
+      <form (ngSubmit)="fetchGamesByPlayer(playerId)">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Player ID</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="playerId"
+            name="playerId"
+            #playerIdModel="ngModel"
+            required
+          >
+          <mat-error *ngIf="playerIdModel.touched && !playerIdModel.valid">
+            Player ID is required.
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" (click)="fetchGamesByPlayer(playerId)">Fetch Games</button>
+      </form>
+    </div>
+
   </div>
 </div>
-

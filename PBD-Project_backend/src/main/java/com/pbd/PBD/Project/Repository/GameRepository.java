@@ -37,6 +37,6 @@ public interface GameRepository extends JpaRepository<Joc, Integer> {
     Optional<PlayerWithMostGamesDTO> findPlayerWithMostGamesPlayed();
 
     @Query("SELECT g FROM Joc g WHERE g.jucator1.id = :id OR g.jucator2.id = :id")
-    Optional<List<Joc>> findGamesByPlayerId(Long id);
+    List<Joc> findGamesByPlayerId(Long id);
 
 }

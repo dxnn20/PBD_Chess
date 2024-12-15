@@ -98,7 +98,19 @@ public class GameService {
                 .orElseThrow(() -> new IllegalArgumentException("No games found"));
     }
 
-    public Optional<List<Joc>> findGamesByPlayerId(Long id) {
+    public List<Joc> findGamesByPlayerId(Long id) {
         return gameRepository.findGamesByPlayerId(id);
+    }
+
+    public Joc updateGame(Joc game) {
+        Joc gameToUpdate = gameRepository.findById(game.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid game ID: " + game.getId()));
+
+        gameToUpdate.setStartDate(Date.valueOf(game.getStartDate().toLocalDate()));
+        gameToUpdate.setEndDate(Date.valueOf(game.getEndDate().toLocalDate()));
+        gameToUpdate.setType(game.getType());
+        gameToUpdate.setNrPartide(game.getNrPartide());
+
+        return gameRepository.save(gameToUpdate);
     }
 }

@@ -14,6 +14,6 @@ public class GameDTO {
     private String endDate;
     private String type;
     private Integer nrPartide;
-//    private Integer id;
+    private Integer id;
     private Integer jucator1, jucator2;
 }
